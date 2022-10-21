@@ -1,0 +1,11 @@
+<div class="image-browser" appDnd (fileDropped)="onFileDropped($event)">
+  <div class="browser-button">
+    <img alt="upload" src="../../../assets/images/image-icon.png" />
+    <div>Browse or drop image</div>
+  </div>
+  <input
+    type="file"
+    accept="image/jpeg,image/png"
+    (change)="onFileChange($event)"
+  />
+</div>
