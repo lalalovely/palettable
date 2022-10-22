@@ -3,7 +3,6 @@ import { BrowserModule } from "@angular/platform-browser";
 
 import { AppComponent } from "./app.component";
 import { CanvasComponent } from "./components/canvas/canvas.component";
-import { SafePipe } from "./pipes/safe.pipe";
 import { FileUploaderComponent } from "./components/file-uploader/file-uploader.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { DndDirective } from "./directives/dnd/dnd.directive";
@@ -14,7 +13,6 @@ import { PaletteDisplayComponent } from "./components/palette-display/palette-di
   declarations: [
     AppComponent,
     CanvasComponent,
-    SafePipe,
     FileUploaderComponent,
     DndDirective,
     ImageDisplayComponent,
