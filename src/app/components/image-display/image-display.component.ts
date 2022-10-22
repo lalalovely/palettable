@@ -5,6 +5,8 @@ import {
   OnInit,
   Output,
 } from "@angular/core";
+import { IPalette } from "src/app/interfaces/palette";
+import { PaletteGeneratorService } from "src/app/services/palette-generator/palette-generator.service";
 
 @Component({
   selector: "app-image-display",
@@ -12,6 +14,10 @@ import {
   styleUrls: ["./image-display.component.scss"],
 })
 export class ImageDisplayComponent implements OnInit {
+  @Output() palette = new EventEmitter<IPalette[]>();
+
+  private MAX_SIZE = 50000;
+
   fileName: string = "";
   headerLabel: string = "Upload an image";
   hasImage: boolean = false;
@@ -19,7 +25,7 @@ export class ImageDisplayComponent implements OnInit {
   canvas: any;
   imageContainer: any;
 
-  constructor() {}
+  constructor(private paletteGenerator: PaletteGeneratorService) {}
 
   ngOnInit(): void {
     this.image = new Image();
@@ -27,31 +33,45 @@ export class ImageDisplayComponent implements OnInit {
     this.imageContainer = document.getElementsByClassName("image-container");
   }
 
-  loadImage($event: string) {
+  load($event: string) {
     this.fileName = $event;
     this.headerLabel = "Image";
     this.hasImage = true;
     this.drawImage();
+    this.getPalette();
   }
 
-  drawImage() {
-    const image = this.image;
-    const canvas = this.canvas;
-    const container = this.imageContainer[0];
-    image.onload = () => {
-      if (canvas) {
-        const scale = Math.min(
-          container.clientWidth / image.width,
-          container.clientHeight / image.height
-        );
-        canvas.width = image.width * scale;
-        canvas.height = image.height * scale;
-        const ctx = canvas.getContext("2d");
-        ctx?.clearRect(0, 0, canvas.width, canvas.height);
-        ctx?.drawImage(image, 0, 0, canvas.width, canvas.height);
-      }
-    };
+  getPalette() {
+    let cWidth = this.canvas.width;
+    let cHeight = this.canvas.height;
+    const size = cWidth * cHeight;
+
+    // Resize image if size is beyond max size
+    if (this.MAX_SIZE > 0 && size > this.MAX_SIZE) {
+      const ratio = this.canvas.width / this.canvas.height;
+      const scaleFactor = Math.sqrt(this.MAX_SIZE / ratio);
+      const rescaledW = Math.floor(ratio * scaleFactor);
+      const rescaledH = Math.floor(scaleFactor);
+      cWidth = rescaledW;
+      cHeight = rescaledH;
+    }
+
+    // Load image to a temporary canvas
+    const tempCanvas = document.createElement("canvas");
+    tempCanvas.width = cWidth;
+    tempCanvas.height = cHeight;
+
+    let imageData: any;
+    const image = new Image();
     image.src = this.fileName;
+    image.onload = () => {
+      const tempCtx = tempCanvas.getContext("2d");
+      tempCtx?.drawImage(image, 0, 0, cWidth, cHeight);
+
+      imageData = tempCtx?.getImageData(0, 0, cWidth, cHeight);
+      const palette = this.paletteGenerator.generatePalette(imageData);
+      this.palette.emit(palette);
+    };
   }
 
   @HostListener("window:resize", ["$event"])
@@ -59,8 +79,26 @@ export class ImageDisplayComponent implements OnInit {
     this.drawImage();
   }
 
-  prepareDataset() {
-    const ctx = this.canvas.getContext("2d");
-    //ctx?.get
+  // Draws image to the canvas element
+  drawImage() {
+    const canvas = this.canvas;
+    const container = this.imageContainer[0];
+    this.image.onload = () => {
+      if (canvas) {
+        // Scale image to fit in its container while keeping its aspect ratio
+        const scale = Math.min(
+          container.clientWidth / this.image.width,
+          container.clientHeight / this.image.height
+        );
+
+        canvas.width = this.image.width * scale;
+        canvas.height = this.image.height * scale;
+
+        const ctx = canvas.getContext("2d");
+        ctx?.clearRect(0, 0, canvas.width, canvas.height);
+        ctx?.drawImage(this.image, 0, 0, canvas.width, canvas.height);
+      }
+    };
+    this.image.src = this.fileName;
   }
 }

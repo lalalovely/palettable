@@ -4,9 +4,11 @@
   </header>
   <section class="container">
     <div class="main">
-      <div class="image-display"><app-image-display></app-image-display></div>
+      <div class="image-display">
+        <app-image-display (palette)="loadPalette($event)"></app-image-display>
+      </div>
       <div class="palette-display">
-        <app-palette-display></app-palette-display>
+        <app-palette-display [palette]="palette"></app-palette-display>
       </div>
     </div>
   </section>

@@ -4,7 +4,7 @@
   </header>
   <section class="tab">
     <div [hidden]="hasImage">
-      <app-file-uploader (imageSource)="loadImage($event)"></app-file-uploader>
+      <app-file-uploader (imageSource)="load($event)"></app-file-uploader>
     </div>
     <div [hidden]="!hasImage">
       <div class="image-container" (window:resize)="onResize($event)">
