@@ -1,59 +1,92 @@
 .container {
-  //padding: 0 20px;
   width: 100%;
 
   .header {
     display: flex;
     width: 100%;
-    height: 40px;
+    //height: 40px;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
     text-align: center;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.075);
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
     color: rgb(0, 0, 0);
     font-size: 18px;
     font-weight: 700;
+
+    .reset {
+      button {
+        content: none;
+        border: none;
+        display: inline-flex;
+        padding: 10px 30px;
+        align-items: center;
+        justify-content: center;
+        background-color: #1ecbe1;
+        color: #ffffff; //#222222;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 9999px;
+        cursor: pointer;
+
+        &:hover {
+          //opacity: 0.7;
+          background-color: #018799;
+        }
+
+        &:active {
+          transform: scale(0.98);
+        }
+      }
+    }
   }
 
   .tab {
     padding: 20px 0;
 
-    .image-container {
-      //width: 100%;
-      //min-height: 300px;
-      //background: #f7f7f8;
-      //padding: 20px;
-      //width: 100%;
-      width: auto;
-      border: 1px solid rgb(0 0 0 / 11%);
-      position: relative;
+    .image-display {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      //touch-action: none;
-      //z-index: 1;
-      //flex-grow: 1;
-      height: 400px;
+      flex-direction: column-reverse;
+      gap: 2rem;
 
-      #canvas {
-        border: 1px solid #ededee; //#7d7c83;
-        display: block;
+      .image-container {
+        flex: 1 60%;
+        width: auto;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        //touch-action: none;
+        //z-index: 1;
+        //flex-grow: 1;
+        height: 400px;
+
+        #canvas {
+          border: 1px solid #222222; //#ededee; //#7d7c83;
+          display: block;
+        }
       }
 
-      //   .canvas {
-      //     width: 100%;
-      //     height: 100%;
-      //   }
+      .select-color {
+        flex: 1 40%;
 
-      //   .canvas::after {
-      //     width: 100%;
-      //     height: 100%;
-      //     content: "";
-      //     position: absolute;
-      //     left: 0;
-      //     top: 0;
-      //     box-shadow: inset rgb(0 0 0 / 8%);
-      //   }
+        .selected-color-container {
+          display: flex;
+          gap: 1em;
+          padding: 0 10px;
+
+          .picked-color {
+            min-height: 1px;
+            padding: 5px 50px;
+          }
+        }
+      }
     }
+  }
+}
+
+@media (min-width: 768px) {
+  .image-display {
+    flex-direction: row !important;
   }
 }

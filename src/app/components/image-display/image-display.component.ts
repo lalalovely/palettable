@@ -14,7 +14,7 @@ import { PaletteGeneratorService } from "src/app/services/palette-generator/pale
   styleUrls: ["./image-display.component.scss"],
 })
 export class ImageDisplayComponent implements OnInit {
-  @Output() palette = new EventEmitter<IPalette[]>();
+  @Output() imageData = new EventEmitter<ImageData>();
 
   private MAX_SIZE = 50000;
 
@@ -24,17 +24,41 @@ export class ImageDisplayComponent implements OnInit {
   image: any;
   canvas: any;
   imageContainer: any;
+  context: any;
+  pickedColor: string = "";
+  hasError: boolean = false;
+  error: string = "";
 
   constructor(private paletteGenerator: PaletteGeneratorService) {}
 
   ngOnInit(): void {
     this.image = new Image();
     this.canvas = document.getElementById("canvas") as HTMLCanvasElement;
+    this.context = this.canvas.getContext("2d");
     this.imageContainer = document.getElementsByClassName("image-container");
   }
 
-  load($event: string) {
+  pickColor(event: any) {
+    const rect = this.canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    if (this.canvas) {
+      const pixel = this.context.getImageData(x, y, 1, 1);
+      const data = pixel.data;
+
+      const hex = this.paletteGenerator.rgbToHex(data[0], data[1], data[2]);
+      this.pickedColor = hex;
+      console.log("COLOR IS: ", hex);
+    }
+  }
+
+  loadFile($event: string) {
     this.fileName = $event;
+    this.loadImage();
+  }
+
+  loadImage() {
     this.headerLabel = "Image";
     this.hasImage = true;
     this.drawImage();
@@ -69,8 +93,7 @@ export class ImageDisplayComponent implements OnInit {
       tempCtx?.drawImage(image, 0, 0, cWidth, cHeight);
 
       imageData = tempCtx?.getImageData(0, 0, cWidth, cHeight);
-      const palette = this.paletteGenerator.generatePalette(imageData);
-      this.palette.emit(palette);
+      this.imageData.emit(imageData);
     };
   }
 
@@ -83,6 +106,7 @@ export class ImageDisplayComponent implements OnInit {
   drawImage() {
     const canvas = this.canvas;
     const container = this.imageContainer[0];
+    this.image.src = this.fileName;
     this.image.onload = () => {
       if (canvas) {
         // Scale image to fit in its container while keeping its aspect ratio
@@ -94,11 +118,10 @@ export class ImageDisplayComponent implements OnInit {
         canvas.width = this.image.width * scale;
         canvas.height = this.image.height * scale;
 
-        const ctx = canvas.getContext("2d");
-        ctx?.clearRect(0, 0, canvas.width, canvas.height);
-        ctx?.drawImage(this.image, 0, 0, canvas.width, canvas.height);
+        //this.context = canvas.getContext("2d");
+        this.context?.clearRect(0, 0, canvas.width, canvas.height);
+        this.context?.drawImage(this.image, 0, 0, canvas.width, canvas.height);
       }
     };
-    this.image.src = this.fileName;
   }
 }
