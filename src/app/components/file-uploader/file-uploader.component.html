@@ -1,4 +1,9 @@
-<div class="image-browser" appDnd (fileDropped)="onFileDropped($event)">
+<div
+  [hidden]="hasError"
+  class="image-browser"
+  appDnd
+  (fileDropped)="onFileDropped($event)"
+>
   <div class="browser-button">
     <img alt="upload" src="../../../assets/images/image-icon.png" />
     <div>Browse or drop image</div>
@@ -8,4 +13,12 @@
     accept="image/jpeg,image/png"
     (change)="onFileChange($event)"
   />
+</div>
+
+<div [hidden]="!hasError" class="error-container">
+  <div class="error-details">
+    <img alt="error" src="../../../assets/images/error-icon-large.png" />
+    <label>{{ error }}</label>
+    <button (click)="tryAgain()">Upload New File</button>
+  </div>
 </div>
