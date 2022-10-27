@@ -1,103 +1,117 @@
-import { Injectable } from "@angular/core";
-import { isEqual } from "lodash";
 import { IPalette } from "src/app/interfaces/palette";
 import { IPixel } from "src/app/interfaces/pixel";
+import colors from "./colors";
 
-@Injectable({
-  providedIn: "root",
-})
 export class PaletteGeneratorService {
   private K = 8; // Number of clusters
+  rawPalette: IPixel[] = [];
+  palette: IPalette[] = [];
 
   constructor() {}
 
   public generatePalette(imageData: ImageData) {
-    let palette: IPalette[] = [];
+    let rgbColors = [];
     if (imageData) {
-      const pixels = this.buildPixelArray(imageData);
-      const colors = this.quantizeByKMeans(pixels, this.K);
-      colors.map((pixel) => {
-        const r = Math.floor(pixel.red);
-        const g = Math.floor(pixel.green);
-        const b = Math.floor(pixel.blue);
-        palette.push({
-          hex: this.rgbToHex(r, g, b),
-          rgb: `rgb(${r}, ${g}, ${b})`,
-        });
-      });
+      let dataset = this.prepareDataset(imageData);
+      const kMeansCentroids = this.kmeans(dataset, this.K);
+      const finalColors = [];
+      for (let i = 0; i < kMeansCentroids.length; i++) {
+        const centroid = kMeansCentroids[i];
+        let color = [];
+        color.push(Math.round(centroid[0]));
+        color.push(Math.round(centroid[1]));
+        color.push(Math.round(centroid[2]));
+        finalColors.push(color);
+      }
+      rgbColors = this.sortRgbArray(finalColors);
     }
-    return palette;
+    return rgbColors;
   }
 
-  // Color quantization is done using k-means algorithm
-  private quantizeByKMeans(dataset: IPixel[], k: number) {
-    if (k === undefined) k = Math.min(3, dataset.length);
-    // Use a seeded random number generator instead of Math.random(),
-    // so that k-means always produces the same centroids for the same
-    // input.
+  private prepareDataset(imageData: ImageData) {
+    let dataset: number[][] = [];
+    const rawImageData = imageData.data;
+    for (let i = 0; i < rawImageData.length; i += 4) {
+      let rgb: number[] = [];
+      rgb.push(rawImageData[i]);
+      rgb.push(rawImageData[i + 1]);
+      rgb.push(rawImageData[i + 2]);
+      dataset.push(rgb);
+    }
+
+    return dataset;
+  }
+
+  private kmeans(dataset: number[][], k: number) {
+    if (k === undefined) {
+      k = Math.min(3, dataset.length);
+    }
+
     let rngSeed = 0;
     const random = function () {
       rngSeed = (rngSeed * 9301 + 49297) % 233280;
       return rngSeed / 233280;
     };
 
-    // Choose initial centroids randomly.
-    let centroids: IPixel[] = [];
+    // Initial centroids
+    let centroids: number[][] = [];
     for (let i = 0; i < k; ++i) {
-      const idx = Math.floor(random() * dataset.length);
-      centroids.push(dataset[idx]);
+      const index = Math.floor(random() * dataset.length);
+      centroids.push(dataset[index]);
     }
+
     while (true) {
-      console.log("processing...");
-      // 'clusters' is an array of arrays. each sub-array corresponds to
-      // a cluster, and has the points in that cluster.
-      let clusters = [];
+      let clusters: any = [];
+
       for (let i = 0; i < k; ++i) {
-        clusters.push([] as IPixel[]);
+        const initialValue: number[][] = [];
+        clusters.push(initialValue);
       }
 
       for (let i = 0; i < dataset.length; ++i) {
         const point = dataset[i];
-        const nearestCentroid = this.nearestNeighbor(point, centroids);
+        const nearestCentroid = this.findNearestNeighbor(point, centroids);
         clusters[nearestCentroid].push(point);
       }
 
       let converged = true;
+
       for (let i = 0; i < k; ++i) {
         let cluster = clusters[i];
-        let centroidI: IPixel;
+        let newCentroid: number[] = [];
         if (cluster.length > 0) {
-          const centroid = this.centroid(cluster);
-          centroidI = {
-            red: centroid[0],
-            green: centroid[1],
-            blue: centroid[2],
-            alpha: centroid[3],
-          };
+          newCentroid = this.getCentroid(cluster);
         } else {
           // For an empty cluster, set a random point as the centroid.
           const idx = Math.floor(random() * dataset.length);
-          centroidI = dataset[idx];
+          newCentroid = dataset[idx];
         }
-        converged = converged && isEqual(centroidI, centroids[i]);
-        centroids[i] = centroidI;
+
+        converged = converged && this.isArraysEqual(newCentroid, centroids[i]);
+        centroids[i] = newCentroid;
       }
       if (converged) break;
     }
+
     return centroids;
   }
 
-  private nearestNeighbor(point: IPixel, neighbors: IPixel[]) {
+  private initializeClusters(
+    dataset: number[][],
+    k: number,
+    centroids: number[][]
+  ) {
+    console.log("CENTROIDSSSS: ", centroids);
+  }
+
+  private findNearestNeighbor(point: number[], neighbors: number[][]) {
     let bestDistance = Infinity; // Squared distance
     let bestIndex = -1;
     for (let i = 0; i < neighbors.length; ++i) {
       const neighbor = neighbors[i];
-      const flatNeighbor = Object.values(neighbor);
       let dist = 0;
-
-      const flatPoint = Object.values(point);
-      for (var j = 0; j < flatPoint.length; ++j) {
-        dist += Math.pow(flatPoint[j] - flatNeighbor[j], 2);
+      for (var j = 0; j < point.length; ++j) {
+        dist += Math.pow(point[j] - neighbor[j], 2);
       }
       if (dist < bestDistance) {
         bestDistance = dist;
@@ -107,21 +121,17 @@ export class PaletteGeneratorService {
     return bestIndex;
   }
 
-  // Returns the centroid of a dataset.
-  private centroid(dataset: IPixel[]) {
+  private getCentroid(dataset: number[][]) {
     if (dataset.length === 0) return [];
 
     // Calculate running means.
     let runningCentroid = [];
-
-    const flatDataset = Object.values(dataset[0]);
-    for (let i = 0; i < flatDataset.length; ++i) {
+    for (let i = 0; i < dataset.length; ++i) {
       runningCentroid.push(0);
     }
 
     for (let i = 0; i < dataset.length; ++i) {
-      const point = Object.values(dataset[i]);
-
+      const point = dataset[i];
       for (let j = 0; j < point.length; ++j) {
         runningCentroid[j] += (point[j] - runningCentroid[j]) / (i + 1);
       }
@@ -129,27 +139,16 @@ export class PaletteGeneratorService {
     return runningCentroid;
   }
 
-  private buildPixelArray(imageData: ImageData) {
-    const data = imageData.data;
-
-    console.log(data);
-    let pixels: IPixel[] = [];
-
-    for (let i = 0; i < data.length; i += 4) {
-      const rgb = {
-        red: data[i],
-        green: data[i + 1],
-        blue: data[i + 2],
-        alpha: data[i + 3],
-      };
-
-      pixels.push(rgb);
-    }
-
-    return pixels;
+  private isArraysEqual(a: number[], b: number[]) {
+    return (
+      Array.isArray(a) &&
+      Array.isArray(b) &&
+      a.length === b.length &&
+      a.every((val, index) => val === b[index])
+    );
   }
 
-  private rgbToHex(r: number, g: number, b: number) {
+  public rgbToHex(r: number, g: number, b: number) {
     return (
       "#" +
       this.componentToHex(r) +
@@ -161,5 +160,50 @@ export class PaletteGeneratorService {
   private componentToHex(c: number) {
     var hex = c.toString(16);
     return hex.length == 1 ? "0" + hex : hex;
+  }
+
+  private rgbToHsl(c: any) {
+    const r = c[0] / 255,
+      g = c[1] / 255,
+      b = c[2] / 255;
+    const max = Math.max(r, g, b),
+      min = Math.min(r, g, b);
+    let h = 0,
+      s,
+      l = (max + min) / 2;
+
+    if (max == min) {
+      h = s = 0; // achromatic
+    } else {
+      const d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      switch (max) {
+        case r:
+          h = (g - b) / d + (g < b ? 6 : 0);
+          break;
+        case g:
+          h = (b - r) / d + 2;
+          break;
+        case b:
+          h = (r - g) / d + 4;
+          break;
+      }
+
+      h /= 6;
+    }
+    return new Array(h * 360, s * 100, l * 100);
+  }
+
+  private sortRgbArray(rgbArray: any) {
+    return rgbArray
+      .map((c: any, i: number) => {
+        return { color: this.rgbToHsl(c), index: i };
+      })
+      .sort((color1: any, color2: any) => {
+        return color1.color[0] - color2.color[0];
+      })
+      .map((data: any) => {
+        return rgbArray[data.index];
+      });
   }
 }

@@ -8,11 +8,10 @@ import { IPalette } from "./interfaces/palette";
 })
 export class AppComponent {
   title = "palettable";
+  image: ImageData | null = null;
 
-  palette: IPalette[] = [];
-
-  loadPalette($event: IPalette[]) {
-    this.palette = $event;
-    console.log("palette event: ", this.palette);
+  getImage($event: ImageData) {
+    this.image = $event;
+    console.log("HERE", this.image);
   }
 }

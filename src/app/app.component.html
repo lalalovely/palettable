@@ -1,15 +1,17 @@
-<div class="app">
-  <header class="container">
-    <div class="nav"><div class="nav-content">paletteable</div></div>
-  </header>
-  <section class="container">
-    <div class="main">
-      <div class="image-display">
-        <app-image-display (palette)="loadPalette($event)"></app-image-display>
+<div class="app paper">
+  <div class="color-overlay">
+    <header class="container">
+      <div class="nav"><div class="nav-content">palettable</div></div>
+    </header>
+    <section class="container">
+      <div class="main">
+        <div class="image-display">
+          <app-image-display (imageData)="getImage($event)"></app-image-display>
+        </div>
+        <div class="palette-display" *ngIf="image !== null">
+          <app-palette-display [imageData]="image"></app-palette-display>
+        </div>
       </div>
-      <div class="palette-display">
-        <app-palette-display [palette]="palette"></app-palette-display>
-      </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>

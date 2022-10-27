@@ -1,8 +1,10 @@
 .app {
+  padding-bottom: 100px;
   .nav {
     display: flex;
     align-items: stretch;
     z-index: 30;
+    padding-bottom: 20px;
 
     .nav-content {
       align-items: center;
@@ -10,8 +12,8 @@
       display: flex;
       flex-shrink: 0;
       min-height: 5rem;
-      //color: #1ecbe1;
-      color: #0066ff;
+      color: #1ecbe1;
+      //color: #0066ff;
       font-weight: 700;
       font-size: 2rem;
     }
@@ -20,17 +22,20 @@
   .main {
     display: flex;
     flex-direction: column;
-    border-radius: 14px;
-    box-shadow: rgb(0 0 0 / 11%) 0 0 0 1px;
+    //border-radius: 6px;
+    //box-shadow: rgb(0 0 0 / 11%) 0 0 0 1px;
+    //border: 1px solid rgba(0, 0, 0, 0.4); //rgba(0, 0, 0, 0.5); //#222222;
+    //border: none;
 
     .image-display {
       width: auto;
-      padding: 20px;
+      //padding: 20px;
       flex: 1 60%;
+      //border-right: 1px solid #222222; //rgba(0, 0, 0, 0.075);
     }
 
     .palette-display {
-      padding: 20px;
+      //padding: 20px;
       flex: 1 40%;
       width: auto;
     }
@@ -47,12 +52,12 @@
 @media (min-width: 768px) {
   .app {
     .container {
-      max-width: 1200px !important;
+      max-width: 900px !important;
       width: auto !important;
     }
 
-    .main {
-      flex-direction: row !important;
-    }
+    // .main {
+    //   flex-direction: row !important;
+    // }
   }
 }
