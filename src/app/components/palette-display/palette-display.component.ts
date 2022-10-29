@@ -10,6 +10,8 @@ import { PaletteGeneratorService } from "src/app/services/palette-generator/pale
 export class PaletteDisplayComponent implements OnInit {
   @Input() imageData: ImageData | null = null;
   palette: IPalette[] = [];
+  showCopyIcon: boolean = false;
+  copyHovered: boolean = false;
 
   constructor(private paletteGenerator: PaletteGeneratorService) {}
 

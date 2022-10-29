@@ -1,14 +1,20 @@
 <div class="container">
   <header class="header">
-    <label>{{ headerLabel }}</label>
+    <div class="label">
+      <label>{{ headerLabel }}</label>
+    </div>
+
     <div class="reset">
-      <button>Reset</button>
+      <button *ngIf="hasImage">Reset</button>
     </div>
   </header>
   <section class="tab">
     <div [hidden]="hasImage">
       <app-file-uploader (imageSource)="loadFile($event)"></app-file-uploader>
     </div>
+    <p *ngIf="hasImage" class="note">
+      *Click on the image to select a specific color
+    </p>
     <div [hidden]="!hasImage">
       <div class="image-display">
         <div class="image-container" (window:resize)="onResize($event)">
@@ -19,6 +25,7 @@
             (clickEvent)="pickColor($event)"
           ></canvas>
         </div>
+
         <div class="select-color" *ngIf="pickedColor !== ''">
           <div class="selected-color-container">
             <label>Selected color: </label>

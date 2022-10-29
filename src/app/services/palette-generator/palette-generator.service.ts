@@ -1,9 +1,8 @@
 import { IPalette } from "src/app/interfaces/palette";
 import { IPixel } from "src/app/interfaces/pixel";
-import colors from "./colors";
 
 export class PaletteGeneratorService {
-  private K = 8; // Number of clusters
+  private K = 6; // Number of clusters
   rawPalette: IPixel[] = [];
   palette: IPalette[] = [];
 

@@ -7,52 +7,17 @@
       <div class="palette-details">
         <div class="palette-color" [style.background-color]="item.hex"></div>
         <div class="padding-info">
-          <div
-            class="palette-label"
-            (click)="copyToClipboard(item.hex)"
-            title="Copy hex value"
-          >
+          <div class="palette-label" title="Copy hex value">
             <span class="title">HEX</span>
             <span class="value">{{ item.hex }}</span>
           </div>
-          <div
-            class="palette-label"
-            (click)="copyToClipboard(item.rgb)"
-            title="Copy rgb value"
-          >
+          <div class="palette-label" title="Copy rgb value">
             <span class="title">RGB</span>
             <span class="value">{{ item.rgb }}</span>
+            <span class="copy-btn" (click)="copyToClipboard(item.hex)"> </span>
           </div>
         </div>
       </div>
     </div>
   </section>
-  <!-- <section class="palette-container" *ngFor="let item of palette">
-    <div class="palette">
-      <div class="palette-color" [style.background-color]="item.hex"></div>
-      <table class="palette-details">
-        <tbody>
-          <tr>
-            <th>
-              <span>HEX</span>
-            </th>
-            <td>
-              <span>{{ item.hex }}</span>
-            </td>
-          </tr>
-
-          <tr>
-            <th>
-              <span>RGB</span>
-            </th>
-            <td>
-              <span>{{ item.rgb }}</span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section> -->
 </div>
-
-<!-- rgba(17,23,29,.6) -->
