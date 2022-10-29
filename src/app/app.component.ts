@@ -9,9 +9,15 @@ import { IPalette } from "./interfaces/palette";
 export class AppComponent {
   title = "palettable";
   image: ImageData | null = null;
+  toReset: boolean = false;
 
   getImage($event: ImageData) {
     this.image = $event;
-    console.log("HERE", this.image);
+    this.toReset = false;
+  }
+
+  reset() {
+    this.image = null;
+    this.toReset = true;
   }
 }

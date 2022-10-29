@@ -2,6 +2,7 @@ import {
   Component,
   EventEmitter,
   HostListener,
+  Input,
   OnInit,
   Output,
 } from "@angular/core";
@@ -16,11 +17,12 @@ import { PaletteGeneratorService } from "src/app/services/palette-generator/pale
 })
 export class ImageDisplayComponent implements OnInit {
   @Output() imageData = new EventEmitter<ImageData>();
+  @Input() toReset: boolean = false;
 
   private MAX_SIZE = 50000;
 
   fileName: string = "";
-  headerLabel: string = "Upload an image";
+  headerLabel: string = "";
   hasImage: boolean = false;
   image: any;
   canvas: any;
@@ -40,6 +42,18 @@ export class ImageDisplayComponent implements OnInit {
     this.canvas = document.getElementById("canvas") as HTMLCanvasElement;
     this.context = this.canvas.getContext("2d");
     this.imageContainer = document.getElementsByClassName("image-container");
+  }
+
+  ngOnChanges() {
+    if (this.toReset) {
+      this.reset();
+    }
+  }
+
+  reset() {
+    this.hasImage = false;
+    this.headerLabel = "Upload an image";
+    this.context?.reset();
   }
 
   pickColor(event: any) {

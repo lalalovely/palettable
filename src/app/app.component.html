@@ -3,7 +3,9 @@
     <header class="container">
       <div class="nav">
         <div class="nav-content">palettable</div>
-        <button class="reset" *ngIf="image !== null">Reset</button>
+        <button class="reset" *ngIf="image !== null" (click)="reset()">
+          Reset
+        </button>
       </div>
     </header>
     <section class="container" *ngIf="image === null">
@@ -15,7 +17,10 @@
     <section class="container">
       <div class="main">
         <div class="image-display">
-          <app-image-display (imageData)="getImage($event)"></app-image-display>
+          <app-image-display
+            (imageData)="getImage($event)"
+            [toReset]="toReset"
+          ></app-image-display>
         </div>
         <div class="palette-display" *ngIf="image !== null">
           <app-palette-display [imageData]="image"></app-palette-display>
