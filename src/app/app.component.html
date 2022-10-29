@@ -1,18 +1,17 @@
 <div class="app">
   <div class="color-overlay">
     <header class="container">
-      <!-- <div class="nav"><div class="nav-content">palettable</div></div> -->
-      <div class="header">
-        <h1>palettable</h1>
-        <h2>Generate palette or select colors from your image.</h2>
+      <div class="nav">
+        <div class="nav-content">palettable</div>
+        <button class="reset" *ngIf="image !== null">Reset</button>
       </div>
     </header>
-    <!-- <section class="container">
+    <section class="container" *ngIf="image === null">
       <div class="hero">
         <h1>Palette Generator</h1>
         <h2>Generate palette or select colors from your image.</h2>
       </div>
-    </section> -->
+    </section>
     <section class="container">
       <div class="main">
         <div class="image-display">

@@ -1,4 +1,7 @@
 import { NgModule } from "@angular/core";
+import { ClipboardModule } from "@angular/cdk/clipboard";
+import { MatIconModule } from "@angular/material/icon";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { BrowserModule } from "@angular/platform-browser";
 
 import { AppComponent } from "./app.component";
@@ -21,7 +24,13 @@ import { PaletteGeneratorService } from "./services/palette-generator/palette-ge
     PaletteDisplayComponent,
     CanvasClickDirective,
   ],
-  imports: [BrowserModule, BrowserAnimationsModule],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    MatIconModule,
+    ClipboardModule,
+    MatSnackBarModule,
+  ],
   providers: [PaletteGeneratorService],
   bootstrap: [AppComponent],
 })

@@ -3,18 +3,27 @@
     <div class="label">
       <label>{{ headerLabel }}</label>
     </div>
-
-    <div class="reset">
-      <button *ngIf="hasImage">Reset</button>
-    </div>
   </header>
+  <div class="select-color" *ngIf="pickedColor !== ''">
+    <div class="selected-color-container">
+      <label class="center">Selected color: </label>
+      <div class="picked-color-box">
+        <div class="picked-color" [style.background-color]="pickedColor"></div>
+        <div class="picked-color-name center">{{ pickedColor }}</div>
+        <div
+          class="copy-btn"
+          [cdkCopyToClipboard]="pickedColor"
+          (click)="showSnackbar()"
+        >
+          <span class="material-icons">content_copy</span>
+        </div>
+      </div>
+    </div>
+  </div>
   <section class="tab">
-    <div [hidden]="hasImage">
+    <div [hidden]="hasImage" class="image-uploader">
       <app-file-uploader (imageSource)="loadFile($event)"></app-file-uploader>
     </div>
-    <p *ngIf="hasImage" class="note">
-      *Click on the image to select a specific color
-    </p>
     <div [hidden]="!hasImage">
       <div class="image-display">
         <div class="image-container" (window:resize)="onResize($event)">
@@ -24,16 +33,6 @@
             appCanvasClick
             (clickEvent)="pickColor($event)"
           ></canvas>
-        </div>
-
-        <div class="select-color" *ngIf="pickedColor !== ''">
-          <div class="selected-color-container">
-            <label>Selected color: </label>
-            <div
-              class="picked-color"
-              [style.background-color]="pickedColor"
-            ></div>
-          </div>
         </div>
       </div>
     </div>

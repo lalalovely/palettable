@@ -1,15 +1,10 @@
 .app {
   padding-bottom: 100px;
 
-  // backdrop-filter: blur(16px) saturate(180%);
-  // -webkit-backdrop-filter: blur(16px) saturate(180%);
-  // background-color: rgba(255, 255, 255, 0.75);
-  // border-radius: 12px;
-  // border: 1px solid rgba(209, 213, 219, 0.3);
-
   .nav {
     display: flex;
-    align-items: stretch;
+    align-items: center;
+    justify-content: space-between;
     z-index: 30;
     padding-bottom: 5px;
 
@@ -22,29 +17,50 @@
       color: #1ecbe1;
       //color: #0066ff;
       font-weight: 700;
-      font-size: 1.5em;
+      font-size: 2em;
+    }
+
+    .reset {
+      background-color: #222222;
+      color: #ffffff;
+      padding: 10px 30px;
+      border-radius: 7px;
+      cursor: pointer;
+      content: none;
+      border: none;
+      font-size: 16px;
+      font-weight: 700;
+
+      &:hover {
+        opacity: 0.8;
+      }
+
+      &:active {
+        transform: scale(0.98);
+      }
     }
   }
 
-  .header {
+  .hero {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 1em 0 5em 0;
+    padding: 2em 0 3em 0;
+    text-align: center;
 
     h1 {
-      font-size: 24px;
-      font-weight: 400;
-      line-height: 2;
+      font-size: 50px;
+      font-weight: 700;
       color: #303030;
+      margin-bottom: 10px;
     }
 
     h2 {
-      opacity: 0.5;
-      font-size: 13px;
+      opacity: 0.7;
+      font-size: 18px;
       font-weight: 300;
-      color: #000000b3;
+      color: #7d7c83; //#000000b3;
     }
   }
 
@@ -81,23 +97,22 @@
       width: auto !important;
     }
 
-    // .main {
-    //   flex-direction: row !important;
-    // }
+    .main {
+      flex-direction: column-reverse !important;
+    }
 
-    .header {
+    .hero {
       h1 {
         font-size: 50px;
         font-weight: 700;
-        color: #1ecbe1;
-        //color: #303030;
+        color: #303030;
       }
 
       h2 {
         opacity: 1 !important;
         font-size: 20px;
         font-weight: 300;
-        color: #000000b3;
+        color: #7d7c83;
       }
     }
   }

@@ -3,21 +3,31 @@
     <label>Palette</label>
   </header>
   <section class="palette-container">
-    <div class="palette" *ngFor="let item of palette">
-      <div class="palette-details">
-        <div class="palette-color" [style.background-color]="item.hex"></div>
-        <div class="padding-info">
-          <div class="palette-label" title="Copy hex value">
-            <span class="title">HEX</span>
-            <span class="value">{{ item.hex }}</span>
-          </div>
-          <div class="palette-label" title="Copy rgb value">
-            <span class="title">RGB</span>
-            <span class="value">{{ item.rgb }}</span>
-            <span class="copy-btn" (click)="copyToClipboard(item.hex)"> </span>
-          </div>
+    <div class="color-box" *ngFor="let item of palette">
+      <div
+        class="color"
+        [style.background-color]="item.hex"
+        (mouseenter)="setHoveredColor(item)"
+        (mouseleave)="setHoveredColor(null)"
+      >
+        <div
+          *ngIf="hoveredColor?.id === item.id"
+          class="copy-btn"
+          [cdkCopyToClipboard]="item.hex"
+          (click)="showSnackbar()"
+          (mouseenter)="copyHover = true"
+          (mouseleave)="copyHover = false"
+          title="Copy"
+          [style.color]="
+            copyHover
+              ? getColor(item.luminance, true)
+              : getColor(item.luminance, false)
+          "
+        >
+          <span class="material-icons">content_copy</span>
         </div>
       </div>
+      <div class="color-name">{{ item.hex }}</div>
     </div>
   </section>
 </div>

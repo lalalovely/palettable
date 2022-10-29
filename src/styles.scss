@@ -73,16 +73,9 @@ $palettable-theme: mat.define-light-theme(
 html,
 body {
   height: 100%;
-  // background: url("./assets/images/background-img.jpg");
-  // width: 100%;
-  // background-repeat: repeat;
   //background-color: #e9e9e9;
-  background-color: #f4f3ef;
+  background-color: #ffffff; //#f4f3ef;
 
   // background-image: radial-gradient(#1ecbe1 0.5px, #f4f3ef 0.5px);
   // background-size: 10px 10px;
 }
-// body {
-//   margin: 0;
-//   font-family: Roboto, "Helvetica Neue", sans-serif;
-// }

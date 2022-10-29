@@ -5,7 +5,8 @@ import {
   OnInit,
   Output,
 } from "@angular/core";
-import { IPalette } from "src/app/interfaces/palette";
+import { MatSnackBar, MatSnackBarConfig } from "@angular/material/snack-bar";
+
 import { PaletteGeneratorService } from "src/app/services/palette-generator/palette-generator.service";
 
 @Component({
@@ -29,7 +30,10 @@ export class ImageDisplayComponent implements OnInit {
   hasError: boolean = false;
   error: string = "";
 
-  constructor(private paletteGenerator: PaletteGeneratorService) {}
+  constructor(
+    private paletteGenerator: PaletteGeneratorService,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
     this.image = new Image();
@@ -59,7 +63,7 @@ export class ImageDisplayComponent implements OnInit {
   }
 
   loadImage() {
-    this.headerLabel = "Image";
+    this.headerLabel = "Click on the image to select a specific color";
     this.hasImage = true;
     this.drawImage();
     this.getPalette();
@@ -123,5 +127,11 @@ export class ImageDisplayComponent implements OnInit {
         this.context?.drawImage(this.image, 0, 0, canvas.width, canvas.height);
       }
     };
+  }
+
+  showSnackbar() {
+    let config = new MatSnackBarConfig();
+    config.duration = 1000;
+    this.snackBar.open("Copied!", "", config);
   }
 }

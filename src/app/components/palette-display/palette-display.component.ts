@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
+import { MatSnackBar, MatSnackBarConfig } from "@angular/material/snack-bar";
 import { IPalette } from "src/app/interfaces/palette";
 import { PaletteGeneratorService } from "src/app/services/palette-generator/palette-generator.service";
 
@@ -11,9 +12,13 @@ export class PaletteDisplayComponent implements OnInit {
   @Input() imageData: ImageData | null = null;
   palette: IPalette[] = [];
   showCopyIcon: boolean = false;
-  copyHovered: boolean = false;
+  hoveredColor: IPalette | null = null;
+  copyHover: boolean = false;
 
-  constructor(private paletteGenerator: PaletteGeneratorService) {}
+  constructor(
+    private paletteGenerator: PaletteGeneratorService,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {}
 
@@ -27,27 +32,29 @@ export class PaletteDisplayComponent implements OnInit {
         const b = rgb[2];
 
         this.palette.push({
+          id: `palette#${i + 1}`,
           hex: this.paletteGenerator.rgbToHex(r, g, b),
           rgb: `${r}, ${g}, ${b}`,
+          luminance: 0.2126 * r + 0.7152 * g + 0.0722 * b,
         });
       }
     }
   }
 
-  copyToClipboard(text: string) {
-    console.log(text);
+  setHoveredColor(color: IPalette | null) {
+    this.hoveredColor = color;
+  }
 
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(text).then(
-        () => {
-          alert("Copied to clipboard");
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    } else {
-      alert("Browser do not support Clipboard API");
+  showSnackbar() {
+    let config = new MatSnackBarConfig();
+    config.duration = 1000;
+    this.snackBar.open("Copied!", "", config);
+  }
+
+  getColor(luminance: number, hover: boolean) {
+    if (hover) {
+      return luminance < 128 ? "#ffffff" : "#222222";
     }
+    return luminance < 128 ? "#dfdfdf" : "#7d7c83";
   }
 }
