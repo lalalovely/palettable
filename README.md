@@ -4,7 +4,7 @@
 
 ## Description
 
-⚙ Using kmeans clustering for color quantization, Palettable generates a color palette from an image.
+⚙ Using kmeans clustering for color quantization, Palettable generates a color palette from an image.  
 ⚙ User can also select specific color from an image.
 
 ## Site
