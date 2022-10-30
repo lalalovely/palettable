@@ -10,7 +10,8 @@
     "heroku-postbuild": "npm run build"
   },
   "engines": {
-    "node": "16.17.1"
+    "node": "16.17.1",
+    "npm": "8.15.0"
   },
   "private": true,
   "dependencies": {
