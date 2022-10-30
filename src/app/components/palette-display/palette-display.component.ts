@@ -25,6 +25,7 @@ export class PaletteDisplayComponent implements OnInit {
   ngOnChanges() {
     if (this.imageData) {
       const rgbColors = this.paletteGenerator.generatePalette(this.imageData);
+
       for (let i = 0; i < rgbColors.length; i++) {
         const rgb = rgbColors[i];
         const r = rgb[0];

@@ -2,10 +2,10 @@ import { NgModule } from "@angular/core";
 import { ClipboardModule } from "@angular/cdk/clipboard";
 import { MatIconModule } from "@angular/material/icon";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { BrowserModule } from "@angular/platform-browser";
 
 import { AppComponent } from "./app.component";
-import { CanvasComponent } from "./components/canvas/canvas.component";
 import { FileUploaderComponent } from "./components/file-uploader/file-uploader.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { DndDirective } from "./directives/dnd/dnd.directive";
@@ -17,7 +17,6 @@ import { PaletteGeneratorService } from "./services/palette-generator/palette-ge
 @NgModule({
   declarations: [
     AppComponent,
-    CanvasComponent,
     FileUploaderComponent,
     DndDirective,
     ImageDisplayComponent,
@@ -30,6 +29,7 @@ import { PaletteGeneratorService } from "./services/palette-generator/palette-ge
     MatIconModule,
     ClipboardModule,
     MatSnackBarModule,
+    MatProgressSpinnerModule,
   ],
   providers: [PaletteGeneratorService],
   bootstrap: [AppComponent],

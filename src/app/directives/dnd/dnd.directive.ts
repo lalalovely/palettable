@@ -20,7 +20,6 @@ export class DndDirective {
     evt.preventDefault();
     evt.stopPropagation();
     this.fileOver = true;
-    console.log("FILE OVER");
   }
 
   // Dragleave listener
@@ -29,13 +28,11 @@ export class DndDirective {
     evt.preventDefault();
     evt.stopPropagation();
     this.fileOver = false;
-    console.log("FILE LEAVE");
   }
 
   // Drop listener
   @HostListener("drop", ["$event"])
   public ondrop(evt: DragEvent) {
-    console.log("FILE DROP");
     evt.preventDefault();
     evt.stopPropagation();
     this.fileOver = false;

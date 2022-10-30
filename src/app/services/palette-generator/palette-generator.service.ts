@@ -95,14 +95,6 @@ export class PaletteGeneratorService {
     return centroids;
   }
 
-  private initializeClusters(
-    dataset: number[][],
-    k: number,
-    centroids: number[][]
-  ) {
-    console.log("CENTROIDSSSS: ", centroids);
-  }
-
   private findNearestNeighbor(point: number[], neighbors: number[][]) {
     let bestDistance = Infinity; // Squared distance
     let bestIndex = -1;
@@ -136,15 +128,6 @@ export class PaletteGeneratorService {
       }
     }
     return runningCentroid;
-  }
-
-  private isArraysEqual(a: number[], b: number[]) {
-    return (
-      Array.isArray(a) &&
-      Array.isArray(b) &&
-      a.length === b.length &&
-      a.every((val, index) => val === b[index])
-    );
   }
 
   public rgbToHex(r: number, g: number, b: number) {
@@ -204,5 +187,14 @@ export class PaletteGeneratorService {
       .map((data: any) => {
         return rgbArray[data.index];
       });
+  }
+
+  private isArraysEqual(a: number[], b: number[]) {
+    return (
+      Array.isArray(a) &&
+      Array.isArray(b) &&
+      a.length === b.length &&
+      a.every((val, index) => val === b[index])
+    );
   }
 }

@@ -67,7 +67,6 @@ export class ImageDisplayComponent implements OnInit {
 
       const hex = this.paletteGenerator.rgbToHex(data[0], data[1], data[2]);
       this.pickedColor = hex;
-      console.log("COLOR IS: ", hex);
     }
   }
 

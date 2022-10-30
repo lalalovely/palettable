@@ -12,12 +12,6 @@ export class CanvasClickDirective {
   onMouseDown(evt: any) {
     evt.preventDefault();
     evt.stopPropagation();
-
-    // const rect = canvas.getBoundingClientRect();
-    // const x = e.clientX - rect.left;
-    // const y = e.clientY - rect.top;
-
-    // console.log("FILE OVER");
     this.clickEvent.emit(evt);
   }
 }
