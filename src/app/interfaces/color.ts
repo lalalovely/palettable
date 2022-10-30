@@ -1,4 +1,4 @@
-export interface IPalette {
+export interface IColor {
   id: string;
   hex: string;
   rgb: string;

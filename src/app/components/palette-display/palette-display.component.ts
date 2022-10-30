@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { MatSnackBar, MatSnackBarConfig } from "@angular/material/snack-bar";
-import { IPalette } from "src/app/interfaces/palette";
+import { IColor } from "src/app/interfaces/color";
 import { PaletteGeneratorService } from "src/app/services/palette-generator/palette-generator.service";
 
 @Component({
@@ -10,9 +10,9 @@ import { PaletteGeneratorService } from "src/app/services/palette-generator/pale
 })
 export class PaletteDisplayComponent implements OnInit {
   @Input() imageData: ImageData | null = null;
-  palette: IPalette[] = [];
+  palette: IColor[] = [];
   showCopyIcon: boolean = false;
-  hoveredColor: IPalette | null = null;
+  hoveredColor: IColor | null = null;
   copyHover: boolean = false;
 
   constructor(
@@ -42,7 +42,7 @@ export class PaletteDisplayComponent implements OnInit {
     }
   }
 
-  setHoveredColor(color: IPalette | null) {
+  setHoveredColor(color: IColor | null) {
     this.hoveredColor = color;
   }
 

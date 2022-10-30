@@ -1,5 +1,4 @@
 import { Component } from "@angular/core";
-import { IPalette } from "./interfaces/palette";
 
 @Component({
   selector: "app-root",
