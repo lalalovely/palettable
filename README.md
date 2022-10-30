@@ -1,5 +1,11 @@
 # Palettable
 
+## Description
+Using kmeans clustering for color quantization, Palettable generates color palette from an image.
+
+## Site
+https://palettable-coral.vercel.app/
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.6.
 
 ## Development server
