@@ -11,7 +11,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { DndDirective } from "./directives/dnd/dnd.directive";
 import { ImageDisplayComponent } from "./components/image-display/image-display.component";
 import { PaletteDisplayComponent } from "./components/palette-display/palette-display.component";
-import { CanvasClickDirective } from "./directives/canvas-click.directive";
+import { CanvasClickDirective } from "./directives/canvas-click/canvas-click.directive";
 import { PaletteGeneratorService } from "./services/palette-generator/palette-generator.service";
 
 @NgModule({
