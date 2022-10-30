@@ -14,10 +14,17 @@
       display: flex;
       flex-shrink: 0;
       min-height: 5rem;
-      color: #1ecbe1;
-      //color: #0066ff;
-      font-weight: 700;
-      font-size: 2em;
+      column-gap: 5px;
+
+      .icon {
+        width: 100%;
+      }
+
+      label {
+        color: #1ecbe1;
+        font-weight: 700;
+        font-size: 2em;
+      }
     }
 
     .reset {
@@ -70,22 +77,17 @@
 
     .image-display {
       width: auto;
-      //padding: 20px;
       flex: 1 60%;
-      //border-right: 1px solid #222222; //rgba(0, 0, 0, 0.075);
     }
 
     .palette-display {
-      //padding: 20px;
       flex: 1 40%;
       width: auto;
     }
   }
 
   .container {
-    //flex-grow: 1;
     margin: 0 auto;
-    //width: auto;
     padding: 0 2em;
   }
 }
