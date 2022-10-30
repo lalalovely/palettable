@@ -17,7 +17,7 @@
     height: 380px;
     padding: 30px;
     text-align: center;
-    border: 2px dashed rgba(0, 0, 0, 0.4); //#222222; //rgb(0 0 0 / 11%); //#ededee; //#c6c6ce; //#cbcbcd; //#ededee;
+    border: 2px dashed rgba(0, 0, 0, 0.4);
   }
 
   input {
@@ -38,7 +38,6 @@
     justify-content: center;
     flex-direction: column;
     gap: 20px;
-    //cursor: pointer;
     height: 380px;
     padding: 30px;
     text-align: center;
@@ -57,9 +56,9 @@
       content: none;
       border: none;
       cursor: pointer;
-      background-color: #1ecbe1; //#ffffff; //#cbcbcd; //#7d7c83;
+      background-color: #1ecbe1;
       border: 1px solid white;
-      color: #ffffff; //rgba(0, 0, 0, 0.8);
+      color: #ffffff;
       font-size: 1em;
       font-weight: 600;
       border-radius: 8px;
