@@ -51,6 +51,7 @@ export class ImageDisplayComponent implements OnInit {
   }
 
   reset() {
+    this.pickedColor = "";
     this.hasImage = false;
     this.headerLabel = "Upload an image";
     this.context?.reset();
